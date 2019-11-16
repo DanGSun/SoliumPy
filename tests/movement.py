@@ -1,7 +1,6 @@
 import unittest
 from main import DefaultCase, world
 
-
 class MoveTest(DefaultCase):
 
     def setUp(self):

@@ -211,7 +211,7 @@ class Server:
         reactor.listenUDP(port, self.udp)
 
     def run(self):
-        self.logger.info('Start %s:%s' % (IP, PORT))
+        self.logger.info(f'Started at {IP}:{PORT}')
         self.main_game.start()
         Console()
         self.reactor.run()
@@ -223,9 +223,10 @@ class Console(Thread):
         self.start()
 
     def run(self):
+        print("Server console is ready.")
         while True:
             try:
-                out = eval(input())
+                out = eval(input(">>> "))
                 if out is not None:
                     print(out)
             except KeyboardInterrupt:

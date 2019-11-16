@@ -1,19 +1,21 @@
 {
-  "admin": {
-    "user": "admin",
-    "password": "1234",
-    "player_info": {
-      "inventory": [
+  "admin":{
+    "user":"admin",
+    "password":"1234",
+    "player_info":{
+      "inventory":[
         "51"
       ],
-      "effects": [],
-      "hp": 100,
-      "x": 56,
-      "y": 356,
-      "direction": 0,
-      "active_item": 0
+      "effects":[
+
+      ],
+      "hp":100,
+      "x":56,
+      "y":356,
+      "direction":0,
+      "active_item":0
     },
-    "user_id": 1,
-    "user_rights": 1
+    "user_id":1,
+    "user_rights":1
   }
 }

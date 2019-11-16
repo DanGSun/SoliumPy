@@ -1,5 +1,10 @@
 import time
-import json
+
+try:
+    import ujson as json
+except ImportError:
+    import json
+
 from socket import socket, AF_INET, SOCK_DGRAM
 from threading import Thread
 
