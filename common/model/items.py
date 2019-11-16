@@ -1,5 +1,5 @@
 from common.engine.mechanics.object import Weapon
-from common.game.entities import *
+from common.models.entities import *
 
 
 class Sword(Weapon):

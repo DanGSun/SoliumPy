@@ -1,6 +1,6 @@
+import pygame
 import threading
 import time
-import pygame
 
 # TODO: save world
 
@@ -34,7 +34,7 @@ class Game(threading.Thread):
 
     @staticmethod
     def get_img(name):
-        s = pygame.image.load('game/assets/img/' + name)
+        s = pygame.image.load('models/assets/img/' + name)
         return {
             'name': name,
             'assets': str(pygame.image.tostring(s, 'RGBA')),
@@ -98,8 +98,3 @@ class Game(threading.Thread):
                 time.sleep(1 / self.tps - time.time() + t)
             else:
                 print(self.tps + 1 / self.tps - time.time() + t)
-
-
-if "__main__" == __name__:
-    game = Game()
-    run()

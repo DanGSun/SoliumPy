@@ -1,5 +1,5 @@
 import unittest
-from row_client import Connection
+from server.row_client import Connection
 
 
 class TestWorld:

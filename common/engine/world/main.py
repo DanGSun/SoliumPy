@@ -1,6 +1,7 @@
 from common.engine.player import Player
 from common.engine.mechanics.object import Block, Rect
-from common.engine.world import Chunk
+from common.engine.world.chunk import Chunk
+from common.model import *  # fixme
 
 
 class World:
@@ -27,8 +28,17 @@ class World:
 
         self.rect = Rect(0, 0, self.width, self.height)
 
-        self.all_objects = list(filter(lambda x: self.get_attr(x),
-                                       map(lambda x: getattr(objects, x), dir(objects))))  # FIXME: !!
+        # self.all_objects = list(
+        #     filter(
+        #         lambda x: self.get_attr(x),
+        #         map(lambda x: getattr(objects, x), dir(objects))
+        #     )
+        # )  # FIXME: !!
+
+        self.all_objects = [
+            getattr(objects, 'x')
+            for x in dir()
+        ]
 
     def reload_active_chunks(self):
         self.active_chunks = set()
@@ -52,13 +62,6 @@ class World:
         self.players[user.name] = player
         player.spawn(x, y)
         return player
-
-    @staticmethod
-    def get_attr(obj, attr='id'):
-        try:
-            return getattr(obj, attr)
-        except AttributeError:
-            return False
 
     @staticmethod
     def get_visible_objects(objects):
