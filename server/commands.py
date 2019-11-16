@@ -121,7 +121,7 @@ def reg(self, data):
         raise Exception('Bad password')
     if data['user'] not in self.temp.users:
         user_id = [self.temp.users[i]['user_id'] for i in self.temp.users]
-        self.id = max(user_id) + 1
+        self.id = (max(user_id) if user_id else 0) + 1
         self.temp.users[data["user"]] = {
             'user': data["user"],
             'password': data["password"],

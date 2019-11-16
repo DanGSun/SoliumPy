@@ -12,7 +12,7 @@ class MoveTest(DefaultCase):
         self.assertIsInstance(world.data, dict)
         y = world.data['players'][self.user]['y']
         self.connection.action('down')
-        self.connection.action('stop', 'horizontal')
+        self.connection.action('stop', 'vertical')
         self.assertGreater(world.data['players'][self.user]['y'], y)
 
     def test_move_up(self):
@@ -20,7 +20,7 @@ class MoveTest(DefaultCase):
         self.assertIsInstance(world.data, dict)
         y = world.data['players'][self.user]['y']
         self.connection.action('up')
-        self.connection.action('stop', 'horizontal')
+        self.connection.action('stop', 'vertical')
         self.assertLess(world.data['players'][self.user]['y'], y)
 
     def test_move_left(self):

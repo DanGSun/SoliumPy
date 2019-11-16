@@ -1,4 +1,4 @@
-from common.engine.mechanics import EnemyNPC
+from common.engine.mechanics.object import EnemyNPC
 
 
 class Zombie(EnemyNPC):

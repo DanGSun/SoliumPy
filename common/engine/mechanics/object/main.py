@@ -12,6 +12,8 @@ class Object:
     width = 50
     height = 50
 
+    direction = 0
+
     x = 0
     y = 0
 

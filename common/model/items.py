@@ -1,5 +1,6 @@
 from common.engine.mechanics.object import Weapon
-from common.models.entities import *
+from common.model import HealingEffect, PoisonEffect
+from common.model.entities import *
 
 
 class Sword(Weapon):

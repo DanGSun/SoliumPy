@@ -20,12 +20,12 @@ class Entity(Object):
         objects.remove(self)
         return not (
             self.world.rect.contains(rect)
-            and rect.collidelist(
+            and rect.collidelist(list(
                 map(
                     lambda x: x.rect,
                     filter(lambda x: x.collide, objects)
                 )
-            )
+            ))
             or not self.collide
         )
 
@@ -46,14 +46,14 @@ class Entity(Object):
         if self.touchable:
             objects = self.chunk.objects + self.chunk.players + self.chunk.npc + self.chunk.entities
             objects.remove(self)
-            self.collide_action([objects[i] for i in self.rect.collidelistall(
+            self.collide_action([objects[i] for i in self.rect.collidelistall(list(
                 map(
                     lambda r: r.rect,
                     filter(
                         lambda r: r.collide,
                         objects
                     )
-                )
+                ))
             )])
 
     def tp(self, x: int, y: int) -> None:

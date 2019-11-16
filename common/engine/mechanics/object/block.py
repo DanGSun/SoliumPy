@@ -13,7 +13,7 @@ class Block(Object):
     height = 16
     size = 32
 
-    destructibility = 48  # Ticks
+    hp = 48
 
     def __init__(self, world, x: typing.Union[float, int], y: typing.Union[float, int]):
 

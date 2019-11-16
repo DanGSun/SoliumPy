@@ -66,6 +66,7 @@ class UDProtocol(DatagramProtocol):
                 response = self.get_error_message(ex.args[0])
         else:
             response = handler['user'].on_message(message)
+
         self.send(response, address, callback)
 
     def get_error_message(self, error_id):
@@ -165,7 +166,7 @@ class User:
                 resp = self.me.action(action, data)
             except Exception as ex:
                 resp = {'type': action + '_error', 'data': str(ex)}
-                self.logger.error('%s Error %s %s %s' % (self.addr, action, data, str(ex)))
+                self.logger.error(f'{self.addr} Error {action} {data} {traceback.format_exc(ex)}')
                 if DEBUG:
                     traceback.print_exc()
         else:

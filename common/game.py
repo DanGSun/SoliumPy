@@ -54,13 +54,14 @@ class Game(threading.Thread):
                     npc += chunk.npc
                     players += chunk.players
                 data = {
-                    'players': {
-                        player.name: {
+                    'players': [
+                        {
                             'x': player.rect.x,
                             'y': player.rect.y,
                             'hp': player.hp,
                             'id': player.user.id,
                             'name': player.user.name,
+                            'direction': player.direction,
                             'active_item': player.inventory.index(player.active_item)
                             if (getattr(player, 'active_item', None) in player.inventory) else -1,
                             'inventory': [item.id for item in player.inventory],
@@ -71,7 +72,7 @@ class Game(threading.Thread):
                                 } for effect in player.effects
                             ]
                         } for player in self.world.get_visible_objects(players)
-                    },
+                    ],
                     'entities': [
                         {
                             'x': entity.rect.x,

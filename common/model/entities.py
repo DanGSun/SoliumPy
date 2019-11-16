@@ -1,6 +1,6 @@
 from common.engine.mechanics.object import Entity, TempEntity
 from common.engine.mechanics.object import Item
-from common.models.effects import FireEffect
+from common.model.effects import FireEffect
 
 
 class Ball(Entity):
