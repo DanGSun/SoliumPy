@@ -1,6 +1,8 @@
+from engine.mechanics.object import NPC
 import random
 
-class Player(models.NPC):
+
+class Player(NPC):
     type = 'player'
 
     width = 40

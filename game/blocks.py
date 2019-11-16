@@ -13,5 +13,5 @@ class Brick(Block):
     id = '3'
 
 
-class Base(Block):
+class Flag(Block):
     id = '4'

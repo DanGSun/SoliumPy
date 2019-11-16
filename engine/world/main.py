@@ -1,7 +1,6 @@
-from pygame.rect import Rect
-
 from engine.player import Player
 from engine.world.chunk import Chunk
+from engine.mechanics.object import *
 
 
 class World:
@@ -16,8 +15,8 @@ class World:
         self.players = {}
 
         self.active_chunks = set()
-        self.chunks = [[Chunk(x, y, self) for y in range(self.width // Chunk.size // models.Block.size)]
-                       for x in range(self.height // Chunk.size // models.Block.size)]
+        self.chunks = [[Chunk(x, y, self) for y in range(self.width // Chunk.size // Block.size)]
+                       for x in range(self.height // Chunk.size // Block.size)]
 
         self.tick = 0
 

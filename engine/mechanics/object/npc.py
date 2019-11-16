@@ -1,4 +1,5 @@
 from pygame.math import Vector2
+from engine.mechanics.object import Entity
 
 
 class NPC(Entity):
