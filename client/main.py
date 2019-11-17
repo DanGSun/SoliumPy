@@ -1,5 +1,5 @@
 from lib import Connection, world
-
+import random
 import pygame
 import os
 from pprint import pprint
@@ -24,6 +24,7 @@ font = pygame.font.SysFont('Roboto', 30)
 winx = 1000
 winy = 500
 win = pygame.display.set_mode((winx, winy))
+
 
 def main():
     CameraY = 0
@@ -51,19 +52,20 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 4:
                     if c_player['active_item'] <= 8:
-                        connection.action("active_item_change", data=c_player['active_item']+1)
+                        connection.action("active_item_change", data=c_player['active_item'] + 1)
                     else:
                         connection.action("active_item_change", data=0)
                 if event.button == 5:
                     if c_player['active_item'] >= 0:
-                        connection.action("active_item_change", data=c_player['active_item']-1)
+                        connection.action("active_item_change", data=c_player['active_item'] - 1)
                     else:
                         connection.action("active_item_change", data=8)
 
         keys = pygame.key.get_pressed()
 
         if pygame.mouse.get_pressed()[0]:
-            connection.action("action", data={"x":int(pygame.mouse.get_pos()[0]+CameraX), "y": int(pygame.mouse.get_pos()[1]+CameraY)})
+            connection.action("action", data={"x": int(pygame.mouse.get_pos()[0] + CameraX),
+                                              "y": int(pygame.mouse.get_pos()[1] + CameraY)})
         if keys[pygame.K_1]:
             connection.action("active_item_change", data=0)
         if keys[pygame.K_2]:
@@ -102,7 +104,7 @@ def main():
             stopped_h = True
         i = 0
         while i <= 500:
-            pygame.draw.rect(win, (100, 100, 100), (winx / 2 - 225 + i-CameraX, 100-CameraY, 50, 50), 2)
+            pygame.draw.rect(win, (100, 100, 100), (winx / 2 - 225 + i - CameraX, 100 - CameraY, 50, 50), 2)
             i += 50
         for player in world.data["players"]:
             x = player['x'] - CameraX
@@ -113,16 +115,17 @@ def main():
             image = pygame.transform.scale(pygame.image.load("assets/players/eyeL.png").convert_alpha(), (40, 40))
             win.blit(image, (x, y))
             win.blit(font.render(player['name'], False, (255, 255, 255)), (x, y - 30))
-        pprint(world.data["objects"])
+        # pprint(world.data["objects"])
         for block in world.data['objects']:
             x = block['x'] - CameraX
             y = block['y'] - CameraY
             try:
-                image = pygame.transform.scale(pygame.image.load("assets/items/"+str(c_player['inventory'][i])+".png").convert_alpha(),(40, 40))
+                image = pygame.transform.scale(
+                    pygame.image.load("assets/items/" + str(block['id']) + ".png").convert_alpha(), (40, 40))
             except:
-                image = pygame.transform.scale(pygame.image.load("assets/items/404.png").convert_alpha(),(40, 40))
+                image = pygame.transform.scale(pygame.image.load("assets/items/404.png").convert_alpha(), (40, 40))
             win.blit(image, (x, y))
-        win.blit(font.render(f"invent: "+str(c_player['active_item']), False, (255, 255, 255)), (winx - 200, 40))
+        win.blit(font.render(f"invent: " + str(c_player['active_item']), False, (255, 255, 255)), (winx - 200, 40))
         interface(c_player)
         pygame.display.update()
         pygame.time.delay(0)
@@ -137,18 +140,19 @@ def interface(c_player):
     i = 0
 
     while i <= 8:
-           pygame.draw.rect(win, (100, 100, 100), (winx/2-225+i*50, 0, 50, 50), 2)
-           if i < len(c_player['inventory']):
+        pygame.draw.rect(win, (100, 100, 100), (winx / 2 - 225 + i * 50+random.randint(0, 3), 0+random.randint(0, 30) , 50, 50), 2)
+        if i < len(c_player['inventory']):
             try:
-                   image = pygame.transform.scale(pygame.image.load("assets/items/"+str(c_player['inventory'][i])+".png").convert_alpha(), (50, 50))
+                image = pygame.transform.scale(
+                    pygame.image.load("assets/items/" + str(c_player['inventory'][i]) + ".png").convert_alpha(),
+                    (50, 50))
             except:
                 image = pygame.transform.scale(
                     pygame.image.load("assets/items/404.png").convert_alpha(),
                     (50, 50))
-           win.blit(image, (winx/2-225+i*50, 0))
-           if i == c_player['active_item']:
-               pygame.draw.rect(win, (227, 70, 76), (winx / 2 - 225 + i * 50, 0, 50, 50), 2)
-           i+=1
-
+        win.blit(image, (winx / 2 - 225 + i * 50+random.randint(0, 60), 0))
+        if i == c_player['active_item']:
+            pygame.draw.rect(win, (227, 70, 76), (winx / 2 - 225 + i * 50, 0, 50, 50), 2)
+        i += 1
 
 main()
