@@ -4,14 +4,20 @@ import pygame
 import os
 from pprint import pprint
 
-NAME = 'admin'
-# PW = input("Password: ")
-DEBUG = True
+NAME = input("Input username ( admin | admin2 | admin3 ): ")
+PW = "1234"
+# HOST = input("ip: ")
+# PORT = input("port: ")
 
+HOST = "localhost"
+PORT = "8956"
+
+DEBUG = True
+print(NAME+"  "+PW+"  "+HOST+"  "+PORT)
 connection = Connection(total_debug=False,
                         handler=world.handler,
-                        auth=(NAME, '1234'),
-                        address=("localhost", 8956))
+                        auth=(NAME, PW),
+                        address=(HOST, int(PORT)))
 
 print(os.getcwd())
 
@@ -34,7 +40,6 @@ def main():
     run = True
     stopped_v = True
     stopped_h = True
-    connection.action("active_item_change", data=0)
 
     while run:
         c_player = None
@@ -129,7 +134,7 @@ def main():
         interface(c_player)
         pygame.display.update()
         pygame.time.delay(0)
-        win.fill((random.randint(50, 100), random.randint(0, 100), random.randint(200, 255)))
+        win.fill((random.randint(0, 100), random.randint(0, 100), random.randint(100, 255)))
 
 
 def interface(c_player):
@@ -154,5 +159,8 @@ def interface(c_player):
         if i == c_player['active_item']:
             pygame.draw.rect(win, (227, 70, 76), (winx / 2 - 225 + i * 50, 0, 50, 50), 2)
         i += 1
-
-main()
+try:
+    main()
+except Exception as e:
+    print(e)
+    input()

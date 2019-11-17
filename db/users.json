@@ -12,16 +12,16 @@
 
       ],
       "hp":80,
-      "x":510,
-      "y":30,
+      "x":390,
+      "y":200,
       "direction":0,
-      "active_item":2
+      "active_item":0
     },
     "user_id":1,
     "user_rights":9
   },
-  "pufit":{
-    "user":"pufit",
+  "admin2":{
+    "user":"admin2",
     "password":"1234",
     "player_info":{
       "inventory":[
@@ -38,5 +38,24 @@
     },
     "user_id":1,
     "user_rights":9
+  },
+  "admin3":{
+    "user":"admin3",
+    "password":"1234",
+    "user_rights":1,
+    "user_id":2,
+    "player_info":{
+      "inventory":[
+
+      ],
+      "effects":[
+
+      ],
+      "hp":100,
+      "x":100,
+      "y":100,
+      "direction":0,
+      "active_item":null
+    }
   }
 }
