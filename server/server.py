@@ -182,7 +182,10 @@ class User:
         commands.leave(self, None)
         if self.channel:
             self.channel.leave(self)
-        self.temp.handlers.remove(self)
+        try:
+            self.temp.handlers.remove(self)
+        except ValueError:
+            pass
         self.logger.info('%s Disconnect' % (self.addr,))
 
     def send(self, data):

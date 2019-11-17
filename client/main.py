@@ -26,6 +26,8 @@ connection = Connection(total_debug=False, handler=world.handler, auth=("admin",
 run = True
 stopped_v = True
 stopped_h = True
+
+
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
