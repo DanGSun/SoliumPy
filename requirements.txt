@@ -2,3 +2,4 @@ pygame
 twisted
 ujson
 flask
+attrs

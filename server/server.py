@@ -231,6 +231,8 @@ class Console(Thread):
                     print(out)
             except KeyboardInterrupt:
                 exit()
+            except SyntaxError:
+                pass
             except:
                 traceback.print_exc()
 

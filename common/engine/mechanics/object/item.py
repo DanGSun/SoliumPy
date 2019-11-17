@@ -105,7 +105,7 @@ class Potion(Item):
             self.drink_action()
 
     def drink_action(self, *args):
-        pass
+        pass  # TODO: Add player reference
 
     def action(self, *_):
         self.is_drinking = True
