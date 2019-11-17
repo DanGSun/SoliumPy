@@ -1,10 +1,19 @@
-from client.lib import Connection, world
+from lib import Connection, world
 
 import pygame
 import os
+from pprint import pprint
 
-NAME = "admin"
+
+NAME = 'admin'
+# PW = input("Password: ")
 DEBUG = True
+
+
+connection = Connection(total_debug=False,
+                        handler=world.handler,
+                        auth=(NAME, '1234'),
+                        address=("localhost", 8956))
 
 print(os.getcwd())
 
@@ -21,12 +30,11 @@ win = pygame.display.set_mode((winx, winy))
 CameraY = 0
 CameraX = 0
 
-connection = Connection(total_debug=False, handler=world.handler, auth=("admin", "1234"))
+
 
 run = True
 stopped_v = True
 stopped_h = True
-
 
 while run:
     for event in pygame.event.get():
@@ -37,7 +45,7 @@ while run:
 
     while not world.data:
         pass
-
+    pprint(world.data)
     for i in world.data["players"]:
         if i["name"] == NAME:
             c_player = i
@@ -46,8 +54,10 @@ while run:
     CameraY = c_player['y'] - winy / 2
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_e]:
-        connection.action("action", {"x": 5, "y": 5})
+    if pygame.mouse.get_pressed()[0]:
+        connection.action("action", data={"x": pygame.mouse.get_pos()[0], "y": pygame.mouse.get_pos()[1]})
+    if keys[pygame.K_F10]:
+        connection.action("active_item_change", data=0)
     if keys[pygame.K_a] and c_player['x'] > 0 and stopped_h:
         connection.action("left")
         stopped_h = False
@@ -66,6 +76,7 @@ while run:
     if not (keys[pygame.K_a] or keys[pygame.K_d]) and not stopped_h:
         connection.action("stop", "horizontal")
         stopped_h = True
+
 
     for player in world.data["players"]:
         x = player['x'] - CameraX

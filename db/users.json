@@ -4,13 +4,32 @@
     "password":"1234",
     "player_info":{
       "inventory":[
-        "51"
+        "1001"
       ],
       "effects":[
 
       ],
       "hp":80,
-      "x":30,
+      "x":342,
+      "y":188,
+      "direction":0,
+      "active_item":0
+    },
+    "user_id":1,
+    "user_rights":9
+  },
+  "pufit":{
+    "user":"pufit",
+    "password":"1234",
+    "player_info":{
+      "inventory":[
+        "1001"
+      ],
+      "effects":[
+
+      ],
+      "hp":80,
+      "x":220,
       "y":30,
       "direction":0,
       "active_item":0

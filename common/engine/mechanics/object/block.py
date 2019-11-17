@@ -65,8 +65,10 @@ class BlockItem(Item):
         place_x = data["x"]
         place_y = data["y"]
 
-        if (self.owner.x - place_x <= self.owner.vision_radius) and (
-                self.owner.y - place_y <= self.owner.vision_radius):
+        if (
+            self.owner.x - place_x <= self.owner.vision_radius
+            and self.owner.y - place_y <= self.owner.vision_radius
+        ):
             Block.place(self.chunk, place_x, place_y)
 
         return {}
