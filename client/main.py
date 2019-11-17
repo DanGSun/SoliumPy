@@ -117,8 +117,10 @@ def main():
         for block in world.data['objects']:
             x = block['x'] - CameraX
             y = block['y'] - CameraY
-            image = pygame.transform.scale(pygame.image.load('assets/blocks/iron.png').convert_alpha(),
-                                           (40, 40))
+            try:
+                image = pygame.transform.scale(pygame.image.load("assets/items/"+str(c_player['inventory'][i])+".png").convert_alpha(),(40, 40))
+            except:
+                image = pygame.transform.scale(pygame.image.load("assets/items/404.png").convert_alpha(),(40, 40))
             win.blit(image, (x, y))
         win.blit(font.render(f"invent: "+str(c_player['active_item']), False, (255, 255, 255)), (winx - 200, 40))
         interface(c_player)
@@ -136,7 +138,13 @@ def interface(c_player):
 
     while i <= 8:
            pygame.draw.rect(win, (100, 100, 100), (winx/2-225+i*50, 0, 50, 50), 2)
-           image = pygame.transform.scale(pygame.image.load("assets/blocks/snow.png").convert_alpha(), (50, 50))
+           if i < len(c_player['inventory']):
+            try:
+                   image = pygame.transform.scale(pygame.image.load("assets/items/"+str(c_player['inventory'][i])+".png").convert_alpha(), (50, 50))
+            except:
+                image = pygame.transform.scale(
+                    pygame.image.load("assets/items/404.png").convert_alpha(),
+                    (50, 50))
            win.blit(image, (winx/2-225+i*50, 0))
            if i == c_player['active_item']:
                pygame.draw.rect(win, (227, 70, 76), (winx / 2 - 225 + i * 50, 0, 50, 50), 2)

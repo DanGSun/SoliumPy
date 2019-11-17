@@ -4,14 +4,16 @@
     "password":"1234",
     "player_info":{
       "inventory":[
-        "1001"
+        "1001",
+        "1003",
+        "1005"
       ],
       "effects":[
 
       ],
       "hp":80,
-      "x":988,
-      "y":412,
+      "x":842,
+      "y":296,
       "direction":0,
       "active_item":0
     },
