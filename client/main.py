@@ -1,13 +1,15 @@
 from client.lib import Connection, world
 
 import pygame
+import os
 
 NAME = "admin"
+
+print(os.getcwd())
 
 pygame.init()
 pygame.display.set_caption("Solium")
 pygame.font.init()
-
 
 font = pygame.font.SysFont('Roboto', 30)
 
@@ -37,8 +39,8 @@ while run:
         if i["name"] == NAME:
             c_player = i
 
-    CameraX = c_player['x']-winx/2
-    CameraY = c_player['y']-winy/2
+    CameraX = c_player['x'] - winx / 2
+    CameraY = c_player['y'] - winy / 2
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_e]:
@@ -61,3 +63,13 @@ while run:
     if not (keys[pygame.K_a] or keys[pygame.K_d]) and not stopped_h:
         connection.action("stop", "horizontal")
         stopped_h = True
+
+    for player in world.data["players"]:
+        x = player['x'] - CameraX
+        y = player['y'] - CameraY
+        image = pygame.transform.scale(pygame.image.load('assets/players/playerred.png').convert_alpha(),
+                                       (40, 40))
+        win.blit(image, (x, y))
+        image = pygame.transform.scale(pygame.image.load("assets/players/eyeL.png").convert_alpha(), (40, 40))
+        win.blit(image, (x, y))
+        win.blit(font.render(player['name'], False, (255, 255, 255)), (x, y - 30))
