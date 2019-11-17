@@ -34,6 +34,7 @@ def main():
     run = True
     stopped_v = True
     stopped_h = True
+    connection.action("active_item_change", data=0)
 
     while run:
         c_player = None
@@ -109,10 +110,10 @@ def main():
         for player in world.data["players"]:
             x = player['x'] - CameraX
             y = player['y'] - CameraY
-            image = pygame.transform.scale(pygame.image.load('assets/players/playerred.png').convert_alpha(),
+            image = pygame.transform.scale(pygame.image.load('assets/players/player'+str(+random.randint(1, 4))+'.png').convert_alpha(),
                                            (40, 40))
             win.blit(image, (x, y))
-            image = pygame.transform.scale(pygame.image.load("assets/players/eyeL.png").convert_alpha(), (40, 40))
+            image = pygame.transform.scale(pygame.image.load("assets/players/eye"+str(random.randint(1, 9))+".png").convert_alpha(), (40, 40))
             win.blit(image, (x, y))
             win.blit(font.render(player['name'], False, (255, 255, 255)), (x, y - 30))
         # pprint(world.data["objects"])
@@ -125,16 +126,15 @@ def main():
             except:
                 image = pygame.transform.scale(pygame.image.load("assets/items/404.png").convert_alpha(), (40, 40))
             win.blit(image, (x, y))
-        win.blit(font.render(f"invent: " + str(c_player['active_item']), False, (255, 255, 255)), (winx - 200, 40))
         interface(c_player)
         pygame.display.update()
         pygame.time.delay(0)
-        win.fill((random.randint(0, 10), 50, random.randint(0, 255)))
+        win.fill((random.randint(50, 100), random.randint(0, 100), random.randint(200, 255)))
 
 
 def interface(c_player):
-    if DEBUG:
-        win.blit(font.render(f"x: {c_player['x']}; y: {c_player['y']}", False, (255, 255, 255)), (winx - 200, 20))
+    # if DEBUG:
+        # win.blit(font.render(f"x: {c_player['x']}; y: {c_player['y']}", False, (255, 255, 255)), (winx - 200, 20))
 
     pygame.draw.rect(win, (232, 81, 81), (0, int(winy - 20), c_player["hp"]+random.randint(0, 30) / 100 * winx, 20))
     i = 0
@@ -150,7 +150,7 @@ def interface(c_player):
                 image = pygame.transform.scale(
                     pygame.image.load("assets/items/404.png").convert_alpha(),
                     (50, 50))
-        win.blit(image, (winx / 2 - 225 + i * 50+random.randint(0, 60), 0))
+        win.blit(image, (winx / 2 - 225 + i * 50, 0+random.randint(0, 10)))
         if i == c_player['active_item']:
             pygame.draw.rect(win, (227, 70, 76), (winx / 2 - 225 + i * 50, 0, 50, 50), 2)
         i += 1
