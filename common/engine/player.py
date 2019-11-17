@@ -20,6 +20,7 @@ class Player(NPC):
         self.user = user
         self.inventory = []
         self.active_item = 0  # TODO: Fists
+        # FIXME: Active item isn't working properly
 
         self.render_chunks = set()
 
@@ -57,7 +58,7 @@ class Player(NPC):
         elif act == 'action':
             print(self.active_item)  # FIXME: Add logger
             print(act, data if data else "")
-            if not self.active_item:
+            if self.active_item is None:
                 return
             if data is not None:
                 self.active_item.action(self, data)
@@ -65,7 +66,7 @@ class Player(NPC):
                 self.active_item.action(self)
         elif act == 'active_item_change':
             try:
-                self.active_item = self.inventory[data]
+                self.active_item = self.inventory[data]  # FIXME: Test Active Item
             except IndexError:
                 self.active_item = None
         elif act == 'drop':

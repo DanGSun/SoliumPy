@@ -26,6 +26,8 @@ winy = 500
 win = pygame.display.set_mode((winx, winy))
 
 def main():
+    connection.action("active_item_change", data=1)
+
     CameraY = 0
     CameraX = 0
 
@@ -34,16 +36,7 @@ def main():
     stopped_h = True
 
     while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 4:
-                    print("4")
-                if event.button == 5:
-                    print("5")
         c_player = None
-
         while not world.data:
             pass
         # pprint(world.data)
@@ -53,7 +46,21 @@ def main():
         CameraX = c_player['x'] - winx / 2
         CameraY = c_player['y'] - winy / 2
         keys = pygame.key.get_pressed()
-
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 4:
+                    if c_player['active_item'] < 8:
+                        connection.action("active_item_change", data=c_player['active_item']+1)
+                    else:
+                        connection.action("active_item_change", data=0)
+                if event.button == 5:
+                    if c_player['active_item'] > 0:
+                        connection.action("active_item_change", data=c_player['active_item']-1)
+                    else:
+                        connection.action("active_item_change", data=8)
+        print(c_player['active_item'])
         if pygame.mouse.get_pressed()[0]:
             connection.action("action", data={"x": pygame.mouse.get_pos()[0], "y": pygame.mouse.get_pos()[1]})
         if keys[pygame.K_F10]:

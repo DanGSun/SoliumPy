@@ -23,7 +23,7 @@ class Block(Object):
     def update(self):
         pass
 
-    def action(self, data):
+    def action(self, actioneer, data):
         """
         Create or break block.
         :param data: Action
@@ -35,10 +35,14 @@ class Block(Object):
 
     @classmethod
     def place(cls, chunk, x, y):
+        print("Block Placed.")
         chunk.add(cls(chunk.world, x, y))
 
     def __init__(self, world, x: typing.Union[float, int], y: typing.Union[float, int]):
-        super(Block, self).__init__(world, Rect(x, y, self.width, self.height))
+        super(Block, self).__init__(world, Rect((int(x), int(y)), (int(self.width), int(self.height))))
+        # FIXME:
+        #  [2019-11-17 19:45:07,985]
+        #  ERROR: ('127.0.0.1', 63592) - {'type': 'action_error', 'data': 'Argument must be rect style object'}
 
 
 class BlockItem(Item):
@@ -49,6 +53,7 @@ class BlockItem(Item):
 
     def __init__(self, world, owner):
         super(Item, self).__init__(world)
+        self.actioneer = None
         self.dropped = False
         self.name = None
 
@@ -58,8 +63,9 @@ class BlockItem(Item):
         self.action_delay = 15
         self.last_action_tick = 0
 
-    def action(self, data):
+    def action(self, actioneer, data):
         super().action()
+        print("BlockItem triggered.")
         pprint(data)
 
         place_x = data["x"]
