@@ -1,122 +1,63 @@
-import time
+from client.lib import Connection, world
 
-try:
-    import ujson as json
-except ImportError:
-    import json
+import pygame
 
-from socket import socket, AF_INET, SOCK_DGRAM
-from threading import Thread
-from logging import Logger, DEBUG
-from pprint import pprint
+NAME = "admin"
 
-log = Logger("client_main")
-
-class World:
-    data = []
-
-    auth = False
-
-    def handler(self, data):
-        if data['type'] == 'tick':
-            self.data = data['data']
-        elif data['type'] == 'auth_ok':
-            self.auth = True
+pygame.init()
+pygame.display.set_caption("Solium")
+pygame.font.init()
 
 
-world = World()
+font = pygame.font.SysFont('Roboto', 30)
 
-class Pinger(Thread):
-    def __init__(self, connection):
-        self.connection = connection
-        log.debug("Pinger Init")
-        super().__init__(target=self.run)
+winx = 1000
+winy = 500
+win = pygame.display.set_mode((winx, winy))
 
-    def run(self):
-        while True:
-            self.connection.send({"request": "ping", "data": {}})
-            time.sleep(2)
-            log.debug("Pinging server")
+CameraY = 0
+CameraX = 0
 
+connection = Connection(total_debug=True, handler=world.handler, auth=("admin", "1234"))
 
-class Connection(Thread):
-    total_debug = False
+run = True
+stopped_v = True
+stopped_h = True
+while run:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
 
-    def __init__(self, address=('localhost', 8956), handler=None, total_debug=False, auth=()):
-        self.address = address
-        self.socket = socket(AF_INET, SOCK_DGRAM)
+    c_player = None
 
-        self.handler = handler
+    while not world.data:
+        pass
 
-        self.send({"request": "connect"})
+    for i in world.data["players"]:
+        if i["name"] == NAME:
+            c_player = i
 
-        self.pinger = Pinger(self)
-        self.pinger.start()
+    CameraX = c_player['x']-winx/2
+    CameraY = c_player['y']-winy/2
+    keys = pygame.key.get_pressed()
 
-        self.total_debug = total_debug
-
-        if auth:
-            self.connect(*auth)
-
-        super().__init__(target=self.run)
-        if self.handler:
-            self.start()
-
-    def send(self, data):
-        self.socket.sendto(json.dumps(data).encode('utf-8'), self.address)
-        log.debug("Sending data to server.")
-        if self.total_debug:
-            print("----------- DATA -----------")
-            pprint(data)
-            print("-------- END OF DATA -------")
-        time.sleep(0.3)
-
-    def action(self, action, data=None):
-        log.debug(f"Sending action {action} to server")
-        self.send({'action': action, 'data': data})
-
-    def eval(self, command):
-        log.debug("Sending `eval` to server")
-        self.send({'type': 'get_eval', 'data': command})
-        while True:
-            r = self.recv()
-            print(r)
-            if r['type'] == 'eval':
-                return r['data']
-            self.handler(r)
-
-    def recv(self):
-        return json.loads(self.socket.recvfrom(8024)[0].decode('utf-8'))
-
-    def disconnect(self):
-        log.debug("Sending disconnect to server")
-        self.send({"request": "disconnect"})
-
-    def connect(self, user, passw):
-        self.send({'type': 'auth', 'data': {'user': user, 'password': passw}})
-
-    def run(self):
-        if not self.handler:
-            raise NotImplementedError('handler must be function')
-        while True:
-            self.handler(self.recv())
-
-    def __del__(self):
-        self.disconnect()
-
-
-if __name__ == '__main__':
-    from ptpython.repl import embed
-
-    connection = Connection(total_debug=True, handler=world.handler, auth=("admin", "1234"))
-
-    def dis_dbg():
-        connection.total_debug = False
-
-    def reconnect():
-        return Connection(total_debug=True, handler=world.handler, auth=("admin", "1234"))
-
-    dis_dbg()
-
-    embed(globals(), locals())
-    connection.disconnect()
+    if keys[pygame.K_e]:
+        connection.action("action", {"x": 5, "y": 5})
+    if keys[pygame.K_a] and c_player['x'] > 0 and stopped_h:
+        connection.action("left")
+        stopped_h = False
+    if keys[pygame.K_d] and c_player['x'] < winx - 40 and stopped_h:
+        connection.action("right")
+        stopped_h = False
+    if keys[pygame.K_w] and c_player['y'] > 0 and stopped_v:
+        connection.action("up")
+        stopped_v = False
+    if keys[pygame.K_s] and c_player['y'] < winy - 40 and stopped_v:
+        connection.action("down")
+        stopped_v = False
+    if not (keys[pygame.K_w] or keys[pygame.K_s]) and not stopped_v:
+        connection.action("stop", "vertical")
+        stopped_v = True
+    if not (keys[pygame.K_a] or keys[pygame.K_d]) and not stopped_h:
+        connection.action("stop", "horizontal")
+        stopped_h = True

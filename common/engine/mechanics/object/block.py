@@ -58,12 +58,12 @@ class BlockItem(Item):
         self.action_delay = 15
         self.last_action_tick = 0
 
-    def action(self, *args):
+    def action(self, data):
         super().action()
-        pprint(args)
+        pprint(data)
 
-        place_x = 0
-        place_y = 0
+        place_x = data["x"]
+        place_y = data["y"]
 
         if (self.owner.x - place_x <= self.owner.vision_radius) and (
                 self.owner.y - place_y <= self.owner.vision_radius):

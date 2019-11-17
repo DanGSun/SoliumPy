@@ -7,7 +7,6 @@ import time
 from common.engine.player import Player
 from common.engine.world import World
 
-
 class Game(threading.Thread):
     tps = 30
 
@@ -45,57 +44,60 @@ class Game(threading.Thread):
         while True:
             t = time.time()
             self.world.do_tick()
-            for player in self.world.players.values():
-                entities = []
-                npc = []
-                players = []
-                for chunk in player.chunk.get_near_chunks(Player.render_radius):
-                    entities += chunk.entities
-                    npc += chunk.npc
-                    players += chunk.players
-                data = {
-                    'players': [
-                        {
-                            'x': player.rect.x,
-                            'y': player.rect.y,
-                            'hp': player.hp,
-                            'id': player.user.id,
-                            'name': player.user.name,
-                            'direction': player.direction,
-                            'active_item': player.inventory.index(player.active_item)
-                            if (getattr(player, 'active_item', None) in player.inventory) else -1,
-                            'inventory': [item.id for item in player.inventory],
-                            'effects': [
-                                {
-                                    'id': effect.id,
-                                    'ticks': effect.ticks
-                                } for effect in player.effects
-                            ]
-                        } for player in self.world.get_visible_objects(players)
-                    ],
-                    'entities': [
-                        {
-                            'x': entity.rect.x,
-                            'y': entity.rect.y,
-                            'id': entity.id
-                        } for entity in self.world.get_visible_objects(entities)
-                    ],
-                    'npc': [
-                        {
-                            'x': npc.rect.x,
-                            'y': npc.rect.y,
-                            'hp': npc.hp,
-                            'effects': [
-                                {
-                                    'id': effect.id,
-                                    'ticks': effect.ticks
-                                } for effect in npc.effects
-                            ]
-                        } for npc in self.world.get_visible_objects(npc)
-                    ]
-                }
-                self.channel.send_pm({'type': 'tick', 'data': data}, player.name)
-            if 1 / self.tps - time.time() + t > 0:
-                time.sleep(1 / self.tps - time.time() + t)
-            else:
-                print(self.tps + 1 / self.tps - time.time() + t)
+            try:
+                for player in self.world.players.values():
+                    entities = []
+                    npc = []
+                    players = []
+                    for chunk in player.chunk.get_near_chunks(Player.render_radius):
+                        entities += chunk.entities
+                        npc += chunk.npc
+                        players += chunk.players
+                    data = {
+                        'players': [
+                            {
+                                'x': player.rect.x,
+                                'y': player.rect.y,
+                                'hp': player.hp,
+                                'id': player.user.id,
+                                'name': player.user.name,
+                                'direction': player.direction,
+                                'active_item': player.inventory.index(player.active_item)
+                                if (getattr(player, 'active_item', None) in player.inventory) else -1,
+                                'inventory': [item.id for item in player.inventory],
+                                'effects': [
+                                    {
+                                        'id': effect.id,
+                                        'ticks': effect.ticks
+                                    } for effect in player.effects
+                                ]
+                            } for player in self.world.get_visible_objects(players)
+                        ],
+                        'entities': [
+                            {
+                                'x': entity.rect.x,
+                                'y': entity.rect.y,
+                                'id': entity.id
+                            } for entity in self.world.get_visible_objects(entities)
+                        ],
+                        'npc': [
+                            {
+                                'x': npc.rect.x,
+                                'y': npc.rect.y,
+                                'hp': npc.hp,
+                                'effects': [
+                                    {
+                                        'id': effect.id,
+                                        'ticks': effect.ticks
+                                    } for effect in npc.effects
+                                ]
+                            } for npc in self.world.get_visible_objects(npc)
+                        ]
+                    }
+                    self.channel.send_pm({'type': 'tick', 'data': data}, player.name)
+                if 1 / self.tps - time.time() + t > 0:
+                    time.sleep(1 / self.tps - time.time() + t)
+                else:
+                    print(self.tps + 1 / self.tps - time.time() + t)
+            except RuntimeError:
+                print("RunTime Error Happened")  # TODO: Make a logger
