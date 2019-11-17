@@ -238,6 +238,7 @@ def summon(self, data):
 
 @perms_check(5)
 def give(self, data):
+    print(data)
     player = self.game.world.players[data['player']]
     obj = self.game.field.get_object_by_id(data['id'])(self.game.world, player)
     player.inventory.append(obj)

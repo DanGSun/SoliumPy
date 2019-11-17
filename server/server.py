@@ -168,9 +168,9 @@ class User:
                 resp = self.me.action(action, data)
             except Exception as ex:
                 resp = {'type': action + '_error', 'data': str(ex)}
-                self.logger.error(f'{self.addr} Error {action} {data} {traceback.format_exc(ex)}')
+                # self.logger.error(f'{self.addr} Error {action} {data} {traceback.format_exc(ex)}')
                 if DEBUG:
-                    traceback.print_exc()
+                    self.logger.error(f'{self.addr} - {resp}')
         else:
             resp = commands.error(None)
         if message.get('id'):
@@ -232,7 +232,7 @@ class Console(Thread):
                 out = eval(input(">>> "))
                 if out is not None:
                     print(out)
-            except KeyboardInterrupt:
+            except KeyboardInterrupt or SystemExit:
                 sys.exit(1)
             except SyntaxError:
                 pass
@@ -247,5 +247,6 @@ class Console(Thread):
         except Exception as e:
             print(f"This error happened on loading ptpython: {e}")
             print("Fallback to std_console")
-            self.alter_console()
+
+        self.alter_console()
 
