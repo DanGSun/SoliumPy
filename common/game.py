@@ -7,6 +7,7 @@ import time
 from common.engine.player import Player
 from common.engine.world import World
 
+
 class Game(threading.Thread):
     tps = 30
 

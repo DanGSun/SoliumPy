@@ -19,7 +19,7 @@ class Player(NPC):
         self.id = user.id
         self.user = user
         self.inventory = []
-        self.active_item = None  # TODO: Fists
+        self.active_item = 0  # TODO: Fists
 
         self.render_chunks = set()
 
@@ -55,6 +55,8 @@ class Player(NPC):
             if self.active_item:
                 self.active_item.hit()
         elif act == 'action':
+            print(self.active_item)  # FIXME: Add logger
+            print(act, data if data else "")
             if not self.active_item:
                 return
             if data is not None:
