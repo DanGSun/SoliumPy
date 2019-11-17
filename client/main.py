@@ -49,7 +49,6 @@ while run:
     for i in world.data["players"]:
         if i["name"] == NAME:
             c_player = i
-
     CameraX = c_player['x'] - winx / 2
     CameraY = c_player['y'] - winy / 2
     keys = pygame.key.get_pressed()
