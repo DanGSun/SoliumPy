@@ -186,6 +186,7 @@ class User:
             self.temp.handlers.remove(self)
         except ValueError:
             pass
+        self.me.chunk.players.remove(self.me)
         self.logger.info('%s Disconnect' % (self.addr,))
 
     def send(self, data):
