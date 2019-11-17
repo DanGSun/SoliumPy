@@ -1,9 +1,10 @@
-
 try:
     import ujson as json
 except ImportError:
     import json
 
+from common.game import Game
+from ptpython.repl import embed
 from server import commands
 from server.config import VERSION, DEBUG, IP, PORT
 from server.db import Db
@@ -11,9 +12,10 @@ from threading import Thread, Lock
 from twisted.internet import error, task, reactor
 from twisted.internet.protocol import DatagramProtocol
 from twisted.python import failure
-from common.game import Game
+
 
 import time
+import sys
 
 import logging
 import traceback
@@ -213,16 +215,17 @@ class Server:
     def run(self):
         self.logger.info(f'Started at {IP}:{PORT}')
         self.main_game.start()
-        Console()
+        Console(self)
         self.reactor.run()
 
 
 class Console(Thread):
-    def __init__(self):
+    def __init__(self, server):
         super().__init__(target=self.run)
+        self.server = server
         self.start()
 
-    def run(self):
+    def alter_console(self):
         print("Server console is ready.")
         while True:
             try:
@@ -230,9 +233,19 @@ class Console(Thread):
                 if out is not None:
                     print(out)
             except KeyboardInterrupt:
-                exit()
+                sys.exit(1)
             except SyntaxError:
                 pass
             except:
                 traceback.print_exc()
+
+    def run(self):
+        print("Starting server console...")
+        try:
+            embed(globals(), locals())
+            sys.exit(1)
+        except Exception as e:
+            print(f"This error happened on loading ptpython: {e}")
+            print("Fallback to std_console")
+            self.alter_console()
 

@@ -3,3 +3,4 @@ twisted
 ujson
 flask
 attrs
+ptpython
