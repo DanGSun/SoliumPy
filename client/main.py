@@ -4,11 +4,9 @@ import pygame
 import os
 from pprint import pprint
 
-
 NAME = 'admin'
 # PW = input("Password: ")
 DEBUG = True
-
 
 connection = Connection(total_debug=False,
                         handler=world.handler,
@@ -27,15 +25,14 @@ winx = 1000
 winy = 500
 win = pygame.display.set_mode((winx, winy))
 
-CameraY = 0
-CameraX = 0
-
-
-
-run = True
-stopped_v = True
-stopped_h = True
 def main():
+    CameraY = 0
+    CameraX = 0
+
+    run = True
+    stopped_v = True
+    stopped_h = True
+
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -80,12 +77,11 @@ def main():
             connection.action("stop", "horizontal")
             stopped_h = True
 
-
         for player in world.data["players"]:
             x = player['x'] - CameraX
             y = player['y'] - CameraY
             image = pygame.transform.scale(pygame.image.load('assets/players/playerred.png').convert_alpha(),
-                                       (40, 40))
+                                           (40, 40))
             win.blit(image, (x, y))
             image = pygame.transform.scale(pygame.image.load("assets/players/eyeL.png").convert_alpha(), (40, 40))
             win.blit(image, (x, y))
@@ -97,8 +93,10 @@ def main():
         win.fill((50, 50, 50))
 
 
-
 def interface(c_player):
     if DEBUG:
         win.blit(font.render(f"x: {c_player['x']}; y: {c_player['y']}", False, (255, 255, 255)), (winx - 200, 20))
     pygame.draw.rect(win, (232, 81, 81), (0, int(winy - 20), c_player["hp"] / 100 * winx, 20))
+
+
+main()
