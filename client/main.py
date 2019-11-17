@@ -73,3 +73,8 @@ while run:
         image = pygame.transform.scale(pygame.image.load("assets/players/eyeL.png").convert_alpha(), (40, 40))
         win.blit(image, (x, y))
         win.blit(font.render(player['name'], False, (255, 255, 255)), (x, y - 30))
+
+    pygame.draw.rect(win, (232, 81, 81), (0, int(winy - 20), c_player["hp"] / 100 * winx, 20))
+    pygame.display.update()
+    pygame.time.delay(1)
+    win.fill((50, 50, 50))
