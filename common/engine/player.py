@@ -28,7 +28,6 @@ class Player(NPC):
         self.achievements = []
 
     def kill(self):
-        # Не send death data, а send self.dbve and current time или что-то т
         self.world.channel.send_pm({'type': 'dead', 'data': 'You dead.'}, self.name)  # TODO: send death data
         self.chunk.remove(self)
         self.hp = Player.hp

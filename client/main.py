@@ -104,7 +104,7 @@ def main():
             stopped_h = True
         i = 0
         while i <= 500:
-            pygame.draw.rect(win, (100, 100, 100), (winx / 2 - 225 + i - CameraX, 100 - CameraY, 50, 50), 2)
+            pygame.draw.rect(win, (100, 100, 100), (winx / 2 - 225 + i - CameraX, 100 - CameraY+random.randint(0, 3), 50, 50), 2)
             i += 50
         for player in world.data["players"]:
             x = player['x'] - CameraX
@@ -129,14 +129,14 @@ def main():
         interface(c_player)
         pygame.display.update()
         pygame.time.delay(0)
-        win.fill((50, 50, 50))
+        win.fill((random.randint(0, 10), 50, random.randint(0, 255)))
 
 
 def interface(c_player):
     if DEBUG:
         win.blit(font.render(f"x: {c_player['x']}; y: {c_player['y']}", False, (255, 255, 255)), (winx - 200, 20))
 
-    pygame.draw.rect(win, (232, 81, 81), (0, int(winy - 20), c_player["hp"] / 100 * winx, 20))
+    pygame.draw.rect(win, (232, 81, 81), (0, int(winy - 20), c_player["hp"]+random.randint(0, 30) / 100 * winx, 20))
     i = 0
 
     while i <= 8:
