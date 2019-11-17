@@ -50,10 +50,14 @@ class Game(threading.Thread):
                     entities = []
                     npc = []
                     players = []
+                    objects = []
+
                     for chunk in player.chunk.get_near_chunks(Player.render_radius):
                         entities += chunk.entities
                         npc += chunk.npc
                         players += chunk.players
+                        objects += chunk.objects
+
                     data = {
                         'players': [
                             {
@@ -86,6 +90,7 @@ class Game(threading.Thread):
                                 'x': npc.rect.x,
                                 'y': npc.rect.y,
                                 'hp': npc.hp,
+                                'id': npc.id,
                                 'effects': [
                                     {
                                         'id': effect.id,
@@ -93,6 +98,15 @@ class Game(threading.Thread):
                                     } for effect in npc.effects
                                 ]
                             } for npc in self.world.get_visible_objects(npc)
+                        ],
+                        'objects': [
+                            {
+                                'x': obj.rect.x,
+                                'y': obj.rect.y,
+                                'id': obj.id,
+                                'hp': obj.hp,
+                            }
+                            for obj in objects
                         ]
                     }
                     self.channel.send_pm({'type': 'tick', 'data': data}, player.name)

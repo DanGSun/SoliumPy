@@ -63,9 +63,25 @@ def main():
         keys = pygame.key.get_pressed()
 
         if pygame.mouse.get_pressed()[0]:
-            connection.action("action", data={"x": pygame.mouse.get_pos()[0], "y": pygame.mouse.get_pos()[1]})
-        if keys[pygame.K_F10]:
+            connection.action("action", data={"x":int(pygame.mouse.get_pos()[0]+CameraX), "y": int(pygame.mouse.get_pos()[1]+CameraY)})
+        if keys[pygame.K_1]:
             connection.action("active_item_change", data=0)
+        if keys[pygame.K_2]:
+            connection.action("active_item_change", data=1)
+        if keys[pygame.K_3]:
+            connection.action("active_item_change", data=2)
+        if keys[pygame.K_4]:
+            connection.action("active_item_change", data=3)
+        if keys[pygame.K_5]:
+            connection.action("active_item_change", data=4)
+        if keys[pygame.K_6]:
+            connection.action("active_item_change", data=5)
+        if keys[pygame.K_7]:
+            connection.action("active_item_change", data=6)
+        if keys[pygame.K_8]:
+            connection.action("active_item_change", data=7)
+        if keys[pygame.K_9]:
+            connection.action("active_item_change", data=8)
         if keys[pygame.K_a] and c_player['x'] > 0 and stopped_h:
             connection.action("left")
             stopped_h = False
@@ -77,7 +93,6 @@ def main():
             stopped_v = False
         if keys[pygame.K_s] and c_player['y'] < winy - 40 and stopped_v:
             connection.action("down")
-
             stopped_v = False
         if not (keys[pygame.K_w] or keys[pygame.K_s]) and not stopped_v:
             connection.action("stop", "vertical")
@@ -98,10 +113,17 @@ def main():
             image = pygame.transform.scale(pygame.image.load("assets/players/eyeL.png").convert_alpha(), (40, 40))
             win.blit(image, (x, y))
             win.blit(font.render(player['name'], False, (255, 255, 255)), (x, y - 30))
+        pprint(world.data["objects"])
+        for block in world.data['objects']:
+            x = block['x'] - CameraX
+            y = block['y'] - CameraY
+            image = pygame.transform.scale(pygame.image.load('assets/blocks/iron.png').convert_alpha(),
+                                           (40, 40))
+            win.blit(image, (x, y))
         win.blit(font.render(f"invent: "+str(c_player['active_item']), False, (255, 255, 255)), (winx - 200, 40))
         interface(c_player)
         pygame.display.update()
-        pygame.time.delay(1)
+        pygame.time.delay(0)
         win.fill((50, 50, 50))
 
 
@@ -114,7 +136,9 @@ def interface(c_player):
 
     while i <= 8:
            pygame.draw.rect(win, (100, 100, 100), (winx/2-225+i*50, 0, 50, 50), 2)
-           if i ==  c_player['active_item']:
+           image = pygame.transform.scale(pygame.image.load("assets/blocks/snow.png").convert_alpha(), (50, 50))
+           win.blit(image, (winx/2-225+i*50, 0))
+           if i == c_player['active_item']:
                pygame.draw.rect(win, (227, 70, 76), (winx / 2 - 225 + i * 50, 0, 50, 50), 2)
            i+=1
 

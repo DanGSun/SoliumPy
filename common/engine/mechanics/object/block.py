@@ -5,6 +5,7 @@ from common.engine.mechanics.object.item import Item
 
 from pygame import Rect
 from pprint import pprint
+from traceback import print_exc
 
 
 class Block(Object):
@@ -36,10 +37,14 @@ class Block(Object):
     @classmethod
     def place(cls, chunk, x, y):
         print("Block Placed.")
-        chunk.add(cls(chunk.world, x, y))
+        try:
+            chunk.add(cls(chunk.world, x, y))
+        except Exception as e:
+            print_exc()
+            raise e
 
     def __init__(self, world, x: typing.Union[float, int], y: typing.Union[float, int]):
-        super(Block, self).__init__(world, Rect((int(x), int(y)), (int(self.width), int(self.height))))
+        super(Block, self).__init__(world, x, y)
         # FIXME:
         #  [2019-11-17 19:45:07,985]
         #  ERROR: ('127.0.0.1', 63592) - {'type': 'action_error', 'data': 'Argument must be rect style object'}
@@ -75,6 +80,6 @@ class BlockItem(Item):
             self.owner.x - place_x <= self.owner.vision_radius
             and self.owner.y - place_y <= self.owner.vision_radius
         ):
-            Block.place(self.chunk, place_x, place_y)
+            Block.place(actioneer.chunk, place_x, place_y)
 
         return {}
