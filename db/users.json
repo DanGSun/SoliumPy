@@ -9,13 +9,13 @@
       "effects":[
 
       ],
-      "hp":100,
-      "x":38,
-      "y":304,
+      "hp":80,
+      "x":0,
+      "y":0,
       "direction":0,
       "active_item":0
     },
     "user_id":1,
-    "user_rights":1
+    "user_rights":9
   }
 }
